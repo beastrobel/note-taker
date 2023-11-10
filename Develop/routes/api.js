@@ -1,16 +1,17 @@
 //I referenced the Mini-Project for the code in this route, and adapted it
-const note = require('express').Router();
+const router = require('express').Router();
+const { readAndAppend, readFromFile } = require('../helpers/fsUtils.js');
 
 //Universally Unique ID
 const { v4: uuidv4 } = require('uuid');
 
 //GET route for retrieving notes
-note.get('/', (req, res) => 
-    readFromFile('/.db/db.json').then((data) => res.json(JSON.parse(data)))
+router.get('/', (req, res) => 
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
 );
 
 //POST route for notes
-note.post('/', (req, res) => {
+router.post('/', (req, res) => {
   //Destructures note post elements
   const { noteTitle, noteText } = req.body;
   
@@ -23,7 +24,7 @@ note.post('/', (req, res) => {
     };
 
   //Adds new note to db file
-  readAndAppend(newNote, '.db/db.json');
+  readAndAppend(newNote, './db/db.json');
 
   const response = {
     status: 'success',
@@ -37,4 +38,4 @@ note.post('/', (req, res) => {
 });
 
 
-module.exports = note;
+module.exports = router;
