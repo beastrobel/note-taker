@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const api = require('./routes/api.js');
+const api = require('./api/notes.js');
 const PORT = 3001;
 
 // Middleware for parsing JSON and form data
@@ -20,8 +20,8 @@ app.get('/', (req, res) =>
 );
 
 //Get route for notes page
-app.get('/api', (req, res) =>
-  res.sendFile(path.join(___dirname, '/public/notes.html'))
+app.get('/notes', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
 app.listen(PORT, () =>

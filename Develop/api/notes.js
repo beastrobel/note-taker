@@ -6,12 +6,12 @@ const { readAndAppend, readFromFile } = require('../helpers/fsUtils.js');
 const { v4: uuidv4 } = require('uuid');
 
 //GET route for retrieving notes
-router.get('/', (req, res) => 
+router.get('/notes', (req, res) => 
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
 );
 
 //POST route for notes
-router.post('/', (req, res) => {
+router.post('/notes', (req, res) => {
   //Destructures note post elements
   const { noteTitle, noteText } = req.body;
   
