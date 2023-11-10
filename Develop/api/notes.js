@@ -1,32 +1,30 @@
-//I referenced the Mini-Project for the code in this route, and adapted it
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const fs = require('fs');
-const pulls = require('../db/db.json');
 
 //Universally Unique ID
 const { v4: uuidv4 } = require('uuid');
 
+//Followed tutorial for this section and adapted to project https://www.youtube.com/watch?v=-UiqzvUe360
 //GET route for retrieving notes
-router.get('/notes', (req, res) => res.json(pulls));
+router.get('/notes', (req, res) => {
+  const noteDb = JSON.parse(fs.readFileSync('db/db.json'));
+  res.json(noteDb);
+});
 
 //POST route for notes
-router.post('/notes', (req, res) => {  
-  let response;
+router.post('/notes', (req, res) => {
 
-  //Checks if title and text are present in the note post
-  if (req.noteTitle && req.noteText) {
-    response = {
-      status: 'sucess',
-      data: req.body,
-    };
-    res.status(201).json(response);
-  } else {
-    res.status(400).json(response);
-  }
+  const noteDb = JSON.parse(fs.readFileSync('db/db.json', 'utf8'));
+  const newNote = {
+    title: req.body.title,
+    text: req.body.text,
+    id: uuidv4(),
+  };
 
-  //Logs data
-  console.log(req.body);
-
+  noteDb.push(newNote);
+  fs.writeFileSync('db/db.json', JSON.stringify(noteDb));
+  res.json(noteDb);
 });
 
 module.exports = router;
